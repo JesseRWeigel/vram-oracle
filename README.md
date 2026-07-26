@@ -8,24 +8,34 @@ Catalog task `GPU-010`.
 
 ## Status: INCOMPLETE, and the reason is interesting
 
-**The verify command fails.** Two assertions do not pass, and both are correct to fail. They are
-left failing rather than relaxed, because a calculator that reports confidence it has not earned
-is worse than one that admits it is under-measured.
+**One assertion still fails, on purpose.** The task asked for predictions within 1 GiB on
+held-out configurations. Mean absolute error is **949 MiB**, which clears it, but worst case is
+**1400 MiB**, which does not. That assertion is left failing rather than relaxed, because a
+calculator reporting confidence it has not earned is worse than one admitting it is
+under-measured.
 
 ```
 FAIL: test_holdout_accuracy_target
-  AssertionError: 1707.7 not less than or equal to 1024
-
-FAIL: test_fit_is_physically_sensible
-  AssertionError: 1.1451653734951792 != 1.0 within 0.1 delta
+  AssertionError: 1400 not less than or equal to 1024
 ```
 
-The task asked for predictions within 1 GiB on held-out configurations. Mean absolute error on
-the holdout is **924 MiB**, which clears it, but worst case is **1708 MiB**, which does not. And
-the `weights_mib` coefficient came out at **1.145** when physics says it should be very close to
-1.0, since a gigabyte of weights occupies a gigabyte of VRAM. A coefficient meaningfully above 1
-means the fit is absorbing unmodeled overhead into the weights term, which is the classic
-signature of too few measurements spanning too narrow a range.
+25 of 26 tests pass.
+
+### The fit was wrong in a fixable way, and one way it was not
+
+The first fit estimated the weights coefficient freely and got **1.145**. Physics says it is
+exactly 1.0: a gigabyte of weights occupies a gigabyte of VRAM. The regression had no leverage on
+that axis, because every measured model is roughly the same size, so it absorbed unmodelled
+per-model overhead into the weights term.
+
+Pinning that coefficient to its physical value and fitting only the terms the data actually
+informs improved the holdout worst case from **1708 MiB to 1400 MiB**, and made the model
+physically sensible, which is a separate test that now passes. Constraining a coefficient you
+know is the honest use of a thin dataset.
+
+What it did not fix is the accuracy target, and that is the real limit: no amount of better
+modelling substitutes for measurements across the size range. Fitting core terms only was tried
+and is worse, 1751 MiB, so the extra terms carry real signal rather than overfitting.
 
 ### Why the data is thin
 

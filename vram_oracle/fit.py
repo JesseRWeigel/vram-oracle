@@ -41,6 +41,17 @@ FEATURES = [
 CORE = ["intercept", "weights_mib", "kv_mib"]
 OPTIONAL = ["n_layer", "activation_mib", "is_moe"]
 
+# A gigabyte of weights occupies a gigabyte of VRAM. That coefficient is 1.0 by physics, not
+# something to be learned, and fitting it freely on measurements from four models that are all
+# roughly the same size produced 1.145: the regression had no leverage on the weights axis, so
+# it absorbed unmodelled per-model overhead into that term. Constraining it to 1.0 and fitting
+# only the terms the data actually informs is the honest use of a thin dataset.
+#
+# Implemented by subtracting the known weights contribution from the target and fitting the
+# remainder, which is exactly equivalent to a constrained least squares with that coefficient
+# pinned, and much simpler than adding constraint machinery to the solver.
+CONSTRAINED = {"weights_mib": 1.0}
+
 HOLDOUT_SEED = 20260725
 HOLDOUT_FRACTION = 0.2
 MIN_HOLDOUT = 8
@@ -160,13 +171,33 @@ def split(samples):
     return train, hold
 
 
-def fit(samples, catalog, train_idx=None, features=None):
+def fit(samples, catalog, train_idx=None, features=None, constrain=True):
+    """Least squares over `features`.
+
+    With `constrain`, any feature in CONSTRAINED is held at its physical value rather than
+    estimated: its contribution is subtracted from the target and the remaining coefficients
+    are fitted against the residual. The returned coefficient vector still carries the pinned
+    value in its slot, so callers and the report see a full coefficient set either way.
+    """
     features = features or FEATURES
     train_idx = list(range(len(samples))) if train_idx is None else train_idx
-    X = [row(catalog[samples[i]["model"]], samples[i]["effective_ctx"], features)
-         for i in train_idx]
-    y = [float(samples[i]["delta_mib"]) for i in train_idx]
-    return solve(X, y, names=features)
+    pinned = {k: v for k, v in CONSTRAINED.items() if constrain and k in features}
+    free = [f for f in features if f not in pinned]
+
+    rows, targets = [], []
+    for i in train_idx:
+        info = catalog[samples[i]["model"]]
+        f = featurize(info, samples[i]["effective_ctx"])
+        offset = sum(coef * f[name] for name, coef in pinned.items())
+        rows.append([f[k] for k in free])
+        targets.append(float(samples[i]["delta_mib"]) - offset)
+
+    if not free:
+        return [pinned.get(k, 0.0) for k in features]
+    solved = solve(rows, targets, names=free)
+    lookup = dict(zip(free, solved))
+    lookup.update(pinned)
+    return [lookup[k] for k in features]
 
 
 def loo_cv_mae(samples, catalog, idx, features):

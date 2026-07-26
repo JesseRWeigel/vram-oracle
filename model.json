@@ -1,10 +1,10 @@
 {
   "all_data": {
-    "bias_mib": -42.2,
-    "mae_mib": 848.9,
-    "max_abs_mib": 2017.3,
+    "bias_mib": -40.2,
+    "mae_mib": 880.2,
+    "max_abs_mib": 2075.9,
     "r2": 0.8,
-    "rmse_mib": 979.6
+    "rmse_mib": 992.4
   },
   "catalog": {
     "gemma4:26b-a4b-it-q4_K_M": {
@@ -429,53 +429,42 @@
     }
   },
   "coefficients": {
-    "intercept": 0.7768073880579323,
-    "kv_mib": 1.0827571637463889,
-    "weights_mib": 1.1451653734951792
+    "activation_mib": 14.113149140482037,
+    "intercept": 5.79492390750289,
+    "kv_mib": 1.05311303738298,
+    "n_layer": 28.572901607847196,
+    "weights_mib": 1.0
   },
   "coefficients_train_only": {
-    "intercept": 0.7211711186428147,
-    "kv_mib": 1.1512912717616035,
-    "weights_mib": 1.1423964390594454
+    "activation_mib": 37.9441428626555,
+    "intercept": 8.43064088872686,
+    "kv_mib": 1.1034580610907332,
+    "n_layer": 26.005695728553423,
+    "weights_mib": 1.0
   },
   "error_bar_basis": "worst absolute error on the held-out configurations",
-  "error_bar_mib": 1708,
+  "error_bar_mib": 1400,
   "feature_selection_loo_on_train": [
     {
       "features": [
         "intercept",
         "weights_mib",
-        "kv_mib"
-      ],
-      "loo_mae_mib": 1232.5
-    },
-    {
-      "features": [
-        "intercept",
-        "weights_mib",
         "kv_mib",
-        "is_moe"
-      ],
-      "loo_mae_mib": 1232.5
-    },
-    {
-      "features": [
-        "intercept",
-        "weights_mib",
-        "kv_mib",
+        "n_layer",
         "activation_mib"
       ],
-      "loo_mae_mib": 1233.5
+      "loo_mae_mib": 1271.6
     },
     {
       "features": [
         "intercept",
         "weights_mib",
         "kv_mib",
+        "n_layer",
         "activation_mib",
         "is_moe"
       ],
-      "loo_mae_mib": 1233.5
+      "loo_mae_mib": 1271.6
     },
     {
       "features": [
@@ -484,7 +473,7 @@
         "kv_mib",
         "n_layer"
       ],
-      "loo_mae_mib": 1253.5
+      "loo_mae_mib": 1273.7
     },
     {
       "features": [
@@ -494,38 +483,55 @@
         "n_layer",
         "is_moe"
       ],
-      "loo_mae_mib": 1253.5
+      "loo_mae_mib": 1273.7
     },
     {
       "features": [
         "intercept",
         "weights_mib",
         "kv_mib",
-        "n_layer",
         "activation_mib"
       ],
-      "loo_mae_mib": 1254.1
+      "loo_mae_mib": 1347.7
     },
     {
       "features": [
         "intercept",
         "weights_mib",
         "kv_mib",
-        "n_layer",
         "activation_mib",
         "is_moe"
       ],
-      "loo_mae_mib": 1254.1
+      "loo_mae_mib": 1347.7
+    },
+    {
+      "features": [
+        "intercept",
+        "weights_mib",
+        "kv_mib"
+      ],
+      "loo_mae_mib": 1442.6
+    },
+    {
+      "features": [
+        "intercept",
+        "weights_mib",
+        "kv_mib",
+        "is_moe"
+      ],
+      "loo_mae_mib": 1442.6
     }
   ],
   "features": [
     "intercept",
     "weights_mib",
-    "kv_mib"
+    "kv_mib",
+    "n_layer",
+    "activation_mib"
   ],
   "gpu_total_mib": 32607,
   "holdout": {
-    "bias_mib": 186.8,
+    "bias_mib": 163.7,
     "configs": [
       {
         "ctx": 2048,
@@ -560,107 +566,107 @@
         "model": "qwen3-minecraft:8b"
       }
     ],
-    "mae_mib": 923.7,
-    "max_abs_mib": 1707.7,
+    "mae_mib": 948.6,
+    "max_abs_mib": 1400.2,
     "n": 8,
     "r2": 0.9,
-    "rmse_mib": 1020.1,
+    "rmse_mib": 1008.2,
     "worst": [
       {
         "actual_mib": 13087,
         "ctx": 32768,
-        "error_mib": 1708,
+        "error_mib": 1400,
         "model": "qwen3-minecraft:8b",
-        "predicted_mib": 14795
+        "predicted_mib": 14487
       },
       {
         "actual_mib": 10825,
         "ctx": 65536,
-        "error_mib": -1282,
+        "error_mib": -1284,
         "model": "qwen3.5:9b",
-        "predicted_mib": 9543
-      },
-      {
-        "actual_mib": 8717,
-        "ctx": 2048,
-        "error_mib": 1104,
-        "model": "qwen3-minecraft:8b",
-        "predicted_mib": 9821
-      },
-      {
-        "actual_mib": 8215,
-        "ctx": 2048,
-        "error_mib": -956,
-        "model": "qwen3.5:9b",
-        "predicted_mib": 7259
+        "predicted_mib": 9541
       },
       {
         "actual_mib": 10053,
         "ctx": 32768,
-        "error_mib": 946,
+        "error_mib": 1111,
         "model": "qwen3:8b",
-        "predicted_mib": 10999
+        "predicted_mib": 11164
+      },
+      {
+        "actual_mib": 8717,
+        "ctx": 2048,
+        "error_mib": 1003,
+        "model": "qwen3-minecraft:8b",
+        "predicted_mib": 9720
       },
       {
         "actual_mib": 15345,
         "ctx": 131072,
-        "error_mib": -710,
+        "error_mib": -993,
         "model": "gemma4:e4b",
-        "predicted_mib": 14635
+        "predicted_mib": 14352
+      },
+      {
+        "actual_mib": 8215,
+        "ctx": 2048,
+        "error_mib": -863,
+        "model": "qwen3.5:9b",
+        "predicted_mib": 7352
       }
     ]
   },
   "n_measurements": 17,
   "n_offloaded_excluded": 0,
   "train": {
-    "bias_mib": -39.2,
-    "mae_mib": 822.8,
-    "max_abs_mib": 1754.1,
+    "bias_mib": -54.3,
+    "mae_mib": 844.6,
+    "max_abs_mib": 1853.9,
     "r2": 0.8,
-    "rmse_mib": 969.9
+    "rmse_mib": 991.4
   },
   "worst_overall": [
     {
       "actual_mib": 13655,
       "ctx": 131072,
-      "error_mib": -2017,
+      "error_mib": -2076,
       "model": "qwen3.5:9b",
-      "predicted_mib": 11638
-    },
-    {
-      "actual_mib": 13087,
-      "ctx": 32768,
-      "error_mib": 1415,
-      "model": "qwen3-minecraft:8b",
-      "predicted_mib": 14502
+      "predicted_mib": 11579
     },
     {
       "actual_mib": 10825,
       "ctx": 65536,
-      "error_mib": -1405,
+      "error_mib": -1403,
       "model": "qwen3.5:9b",
-      "predicted_mib": 9420
+      "predicted_mib": 9422
     },
     {
-      "actual_mib": 9583,
-      "ctx": 8192,
-      "error_mib": 1177,
+      "actual_mib": 13087,
+      "ctx": 32768,
+      "error_mib": 1163,
       "model": "qwen3-minecraft:8b",
-      "predicted_mib": 10760
+      "predicted_mib": 14250
+    },
+    {
+      "actual_mib": 15345,
+      "ctx": 131072,
+      "error_mib": -1129,
+      "model": "gemma4:e4b",
+      "predicted_mib": 14216
     },
     {
       "actual_mib": 9441,
       "ctx": 32768,
-      "error_mib": -1130,
+      "error_mib": -1097,
       "model": "qwen3.5:9b",
-      "predicted_mib": 8311
+      "predicted_mib": 8344
     },
     {
-      "actual_mib": 8717,
-      "ctx": 2048,
-      "error_mib": 1107,
+      "actual_mib": 9583,
+      "ctx": 8192,
+      "error_mib": 1027,
       "model": "qwen3-minecraft:8b",
-      "predicted_mib": 9824
+      "predicted_mib": 10610
     }
   ]
 }
