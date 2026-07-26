@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+# Entry point. No install step: the tool is stdlib Python and runs from the repo.
+cd "$(dirname "$(readlink -f "$0")")"
+exec python3 -m vram_oracle.cli "$@"

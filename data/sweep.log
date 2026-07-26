@@ -1,0 +1,32 @@
+gpu total 32607 MiB, 15 models x 5 contexts
+=== pass 1: 74 of 75 configurations remaining, waiting up to 300s for room each
+[1/74] qwen3:8b ctx=8192 baseline=14759 -> peak=21308 delta=6549 eff_ctx=8192 vram=6330  (6.3s)
+[2/74] qwen3.5:9b ctx=2048 baseline=14756 -> peak=22971 delta=8215 eff_ctx=2048 vram=8233  (26.1s)
+[3/74] qwen3.5:9b ctx=8192 baseline=14756 -> peak=23211 delta=8455 eff_ctx=8192 vram=8472  (3.2s)
+[4/74] qwen3.5:9b ctx=32768 baseline=14756 -> peak=24197 delta=9441 eff_ctx=32768 vram=9461  (4.9s)
+[5/74] qwen3.5:9b ctx=65536 baseline=14762 -> peak=25587 delta=10825 eff_ctx=65536 vram=10865  (4.9s)
+[6/74] qwen3-minecraft:8b ctx=2048 baseline=14756 -> peak=23473 delta=8717 eff_ctx=2048 vram=8786  (5.9s)
+[7/74] gemma4:e4b ctx=2048 baseline=14756 -> peak=24855 delta=10099 eff_ctx=2048 vram=10129  (17.2s)
+[8/74] gemma4:e4b ctx=8192 baseline=14756 -> peak=25173 delta=10417 eff_ctx=8192 vram=10373  (4.8s)
+[9/74] qwen3-minecraft:8b ctx=8192 baseline=14756 -> peak=24339 delta=9583 eff_ctx=8192 vram=9652  (4.9s)
+[10/74] qwen3:8b ctx=32768 baseline=14756 -> peak=24809 delta=10053 eff_ctx=32768 vram=9834  (2.7s)
+[11/74] gemma4:e4b ctx=32768 baseline=14758 -> peak=26071 delta=11313 eff_ctx=32768 vram=11272  (4.7s)
+[12/74] qwen3.5:9b ctx=131072 baseline=14756 -> peak=28411 delta=13655 eff_ctx=131072 vram=13673  (7.9s)
+[13/74] gemma4:e4b ctx=65536 baseline=14758 -> peak=27403 delta=12645 eff_ctx=65536 vram=12616  (4.8s)
+[14/74] gemma4:e4b ctx=131072 baseline=14760 -> peak=30105 delta=15345 eff_ctx=131072 vram=15304  (7.1s)
+[15/74] qwen3-minecraft:8b ctx=32768 baseline=14758 -> peak=27845 delta=13087 eff_ctx=32768 vram=13156  (2.7s)
+[16/74] gpt-oss:20b ctx=2048 baseline=14758 -> peak=14758 delta=0 eff_ctx=2048 vram=13386 CONTAM  (10.1s)
+[17/74] gpt-oss:20b ctx=8192 baseline=14758 -> peak=14758 delta=0 eff_ctx=8192 vram=13604 CONTAM  (5.5s)
+[18/74] qwen3:8b ctx=65536 baseline=14756 -> peak=25961 delta=11205 eff_ctx=40960 vram=10986  (3.9s)
+[19/74] gpt-oss:20b ctx=32768 baseline=14756 -> peak=14756 delta=0 eff_ctx=32768 vram=14225 CONTAM  (0.2s)
+[20/74] gpt-oss:20b ctx=65536 baseline=14758 -> peak=15586 delta=828 eff_ctx=65536 vram=15064 CONTAM  (4.7s)
+gpu total 32607 MiB, 7 models x 5 contexts
+=== pass 1: 18 of 35 configurations remaining, waiting up to 90s for room each
+[1/18] no room for qwen3.5:27b ctx=2048 (needs ~18241 MiB), deferring
+[2/18] no room for qwen3.6:27b ctx=2048 (needs ~18241 MiB), deferring
+[3/18] no room for qwen3.5:27b ctx=8192 (needs ~18625 MiB), deferring
+[4/18] no room for qwen3.6:27b ctx=8192 (needs ~18625 MiB), deferring
+[5/18] no room for gemma4:26b-a4b-it-q4_K_M ctx=2048 (needs ~18894 MiB), deferring
+[6/18] no room for gemma4:26b-a4b-it-q4_K_M ctx=8192 (needs ~19014 MiB), deferring
+[7/18] no room for qwen3-minecraft:8b ctx=65536 (needs ~19022 MiB), deferring
+[8/18] no room for gemma4:26b-a4b-it-q4_K_M ctx=32768 (needs ~19494 MiB), deferring
