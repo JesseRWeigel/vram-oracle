@@ -4,6 +4,8 @@ An empirically fitted VRAM calculator for one specific card, measured rather tha
 
 Catalog task `GPU-010`.
 
+**[Read this on the web](https://jesserweigel.github.io/vram-oracle/)**
+
 ## Status: INCOMPLETE, and the reason is interesting
 
 **The verify command fails.** Two assertions do not pass, and both are correct to fail. They are
