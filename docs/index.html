@@ -1,4 +1,10 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>vram-oracle</title>
+<meta name="description" content="Will this model at this context fit on this card? Measured, not guessed.">
 <style>
 :root{color-scheme:light;--bg:#FAF9FC;--bg2:#F2F0F7;--ink:#1B1826;--ink2:#4A4459;
 --ink3:#6C6580;--rule:#DDD8E8;--accent:#4A3AA7;--code:#F2F0F7;
@@ -50,6 +56,8 @@ footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--rule);
 font-size:14px;color:var(--ink3)}
 @media(prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
+</head>
+<body>
 <div class="wrap">
 <header>
   <p class="eyebrow">JesseRWeigel &middot; open source</p>
@@ -64,13 +72,14 @@ font-size:14px;color:var(--ink3)}
 <p>Catalog task <code>GPU-010</code>.</p>
 <p><strong><a href="https://jesserweigel.github.io/vram-oracle/">Read this on the web</a></strong></p>
 <h2>Status: INCOMPLETE, and the reason is interesting</h2>
-<p><strong>The verify command fails.</strong> Two assertions do not pass, and both are correct to fail. They are left failing rather than relaxed, because a calculator that reports confidence it has not earned is worse than one that admits it is under-measured.</p>
+<p><strong>One assertion still fails, on purpose.</strong> The task asked for predictions within 1 GiB on held-out configurations. Mean absolute error is <strong>949 MiB</strong>, which clears it, but worst case is <strong>1400 MiB</strong>, which does not. That assertion is left failing rather than relaxed, because a calculator reporting confidence it has not earned is worse than one admitting it is under-measured.</p>
 <pre><code>FAIL: test_holdout_accuracy_target
-  AssertionError: 1707.7 not less than or equal to 1024
-
-FAIL: test_fit_is_physically_sensible
-  AssertionError: 1.1451653734951792 != 1.0 within 0.1 delta</code></pre>
-<p>The task asked for predictions within 1 GiB on held-out configurations. Mean absolute error on the holdout is <strong>924 MiB</strong>, which clears it, but worst case is <strong>1708 MiB</strong>, which does not. And the <code>weights_mib</code> coefficient came out at <strong>1.145</strong> when physics says it should be very close to 1.0, since a gigabyte of weights occupies a gigabyte of VRAM. A coefficient meaningfully above 1 means the fit is absorbing unmodeled overhead into the weights term, which is the classic signature of too few measurements spanning too narrow a range.</p>
+  AssertionError: 1400 not less than or equal to 1024</code></pre>
+<p>25 of 26 tests pass.</p>
+<h3>The fit was wrong in a fixable way, and one way it was not</h3>
+<p>The first fit estimated the weights coefficient freely and got <strong>1.145</strong>. Physics says it is exactly 1.0: a gigabyte of weights occupies a gigabyte of VRAM. The regression had no leverage on that axis, because every measured model is roughly the same size, so it absorbed unmodelled per-model overhead into the weights term.</p>
+<p>Pinning that coefficient to its physical value and fitting only the terms the data actually informs improved the holdout worst case from <strong>1708 MiB to 1400 MiB</strong>, and made the model physically sensible, which is a separate test that now passes. Constraining a coefficient you know is the honest use of a thin dataset.</p>
+<p>What it did not fix is the accuracy target, and that is the real limit: no amount of better modelling substitutes for measurements across the size range. Fitting core terms only was tried and is worse, 1751 MiB, so the extra terms carry real signal rather than overfitting.</p>
 <h3>Why the data is thin</h3>
 <p>The sweep needs the GPU nearly empty to load large models. This workstation runs a Minecraft bot swarm that keeps <code>gpt-oss:20b</code> resident at roughly 13 GB, leaving about 17.8 GB free. Seven of the fifteen local models are larger than that, and even the 17 GB models want around 19.5 GB once the KV cache is allocated. They were deferred, not measured.</p>
 <p>What actually got measured, cleanly:</p>
@@ -107,3 +116,5 @@ python3 -m vram_oracle.cli measurements                         # each measureme
   as done.</p>
 </footer>
 </div>
+</body>
+</html>
